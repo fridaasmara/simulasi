@@ -1,6 +1,6 @@
 // import { serverSupabaseServiceRole } from '#supabase/server'
 
-// export default eventHandler(async (event)) => {
+// export default eventHandler(async ())  {
 //     const supabaseAdmin = serverSupabaseServiceRole(event)
 
 //     const { data: {users}, error } = await supabaseAdmin.auth.admin.listUsers()

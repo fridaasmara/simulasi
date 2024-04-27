@@ -5,49 +5,64 @@
             <div class="col-lg-6 offset-md-3">
                 <div class="card shadow mb-5">
                     <div class="card-body">
-                        <form action="" class="p-5">
+                        <form @submit.prevent="tambahTransaksi" class="p-5">
                             <div class="text-center">
                                 <h3 class="mb-4 fw-semibold">Tambah Transaski</h3>
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">No Transaksi</label>
-                                <input type="number" class="form-control" id="exampleFormControlInput1">
+                                <input v-model="form.no_transaksi" type="number" class="form-control" id="exampleFormControlInput1">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Tipe Resep</label>
-                                <select class="form-select" aria-label="Default select example">
+                                <select v-model="form.tipe_resep" class="form-select" aria-label="Default select example">
                                     <option value=""></option>
                                     <option value="Resep">Resep</option>
                                     <option value="Non-resep">Non-resep</option>
                                 </select>
                             </div>
-                            <div class="mb-3">
+                            <div v-if="form.tipe_resep == 'Resep'" class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">No Resep</label>
-                                <input type="number" class="form-control" id="exampleFormControlInput1">
+                                    <select v-model="form.id_resep" class="form-select" aria-label="Default select example">
+                                        <option disable value=" "></option>
+                                        <option v-for="resep in reseps" :value="resep.id">{{ resep.no_resep }}</option>
+                                    </select>
                             </div>
-                            <div class="mb-3">
+                            <div v-if="form.tipe_resep == 'Resep'" class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Nama Pasien</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1">
+                                <select v-model="form.id_resep" class="form-select" aria-label="Default select example">
+                                    <option disable value=" "></option>
+                                    <option v-for="resep in reseps" :value="resep.id">{{ resep.nama_pasien }}</option>
+                                </select>
                             </div>
-                            <div class="mb-3">
+                            <div v-if="form.tipe_resep == 'Resep'" class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Nama Dokter</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1">
+                                <select v-model="form.id_resep" class="form-select" aria-label="Default select example">
+                                    <option disable value=" "></option>
+                                    <option v-for="resep in reseps" :value="resep.id">{{ resep.nama_dokter }}</option>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Resep Obat</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1">
+                                <select v-model="form.id_obat" class="form-select" aria-label="Default select example">
+                                    <option disable value=" "></option>
+                                    <option v-for="obat in obats" :value="obat.id">{{ obat.nama_obat }}</option>
+                                </select>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="exampleFormControlInput1" class="form-label">Jumlah</label>
-                                        <input type="number" class="form-control" id="exampleFormControlInput1">
+                                        <input v-model="form.quantitas" type="number" class="form-control" id="exampleFormControlInput1">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="exampleFormControlInput1" class="form-label">Harga</label>
-                                        <input type="number" class="form-control" id="exampleFormControlInput1">
+                                        <select v-model="form.id_obat" class="form-select" aria-label="Default select example">
+                                            <option disable value=" "></option>
+                                            <option v-for="obat in obats" value="obat.id">{{ obat.harga }}</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -59,14 +74,12 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <input type="number" class="form-control" id="exampleFormControlInput1">
+                                        <input v-model="form.total_bayar" type="number" class="form-control" id="exampleFormControlInput1">
                                     </div>
                                 </div>
                             </div>
                             <div class="text-center">
-                                <nuxt-link to="/user">
-                                    <button class="btn btn-primary mt-5">Kirim</button>
-                                </nuxt-link>
+                                <button type="submit" class="btn btn-primary mt-5">Kirim</button>
                             </div>
                         </form>
                     </div>
@@ -77,7 +90,45 @@
 </template>
 
 <script setup>
+definePageMeta ({
+    middleware: 'auth'
+})
 
+const supabase = useSupabaseClient()
+const obats = ref ([])
+const reseps = ref ([])
+const form = ref ({
+    no_transaksi: "",
+    tipe_resep: "",
+    id_resep: "",
+    id_obat: "",
+    quantitas: 0,
+    total_bayar: 0
+})
+
+const tambahTransaksi = async () => {
+    const { error } = await supabase
+    .from('Transaksi').insert([form.value])
+        // console.log(form.value)
+
+    // if (error) throw error
+    if(!error) navigateTo ('/transaksi')
+}
+
+async function selectObat() {
+    const { data, error } = await supabase.from("Obat").select()
+    if(data) obats.value = data
+}
+
+async function selectResep() {
+    const { data, error } = await supabase.from("Resep").select()
+    if(data) reseps.value = data
+}
+
+onMounted(() => {
+    selectObat()
+    selectResep()
+})
 </script>
 
 <style scoped>

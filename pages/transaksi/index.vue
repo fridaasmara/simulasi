@@ -44,18 +44,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>101</td>
-                                        <td>27/04/2024</td>
-                                        <td>Resep</td>
-                                        <td>R006</td>
-                                        <td>Dita</td>
-                                        <td>Dr. Indah</td>
-                                        <td>Amoxan</td>
-                                        <td>1</td>
-                                        <td>7000</td>
-                                        <td>7000</td>
+                                    <tr v-for="(tran, i) in trans" :key="i">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ tran.no_transaksi }}</td>
+                                        <td>{{ tran.tanggal_transaksi }}</td>
+                                        <td>{{ tran.tipe_resep }}</td>
+                                        <td>{{ tran.Resep.no_resep }}</td>
+                                        <td>{{ tran.Resep.nama_pasien }}</td>
+                                        <td>{{ tran.Resep.nama_dokter }}</td>
+                                        <td>{{ tran.Obat.nama_obat }}</td>
+                                        <td>{{ tran.quantitas }}</td>
+                                        <td>{{ tran.harga }}</td>
+                                        <td>{{ tran.total_bayar }}</td>
                                         <td><i class="bi bi-x-circle text-danger"></i></td>
                                     </tr>
                                 </tbody>
@@ -69,7 +69,25 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: 'auth'
+})
 
+const supabase = useSupabaseClient()
+const trans = ref ([])
+
+const getTransaksi = async () => { 
+    const { data, error } = await supabase
+        .from('Transaksi')
+        .select('*')
+        .order('id', { ascending: false })
+    if(data) trans.value = data
+}
+
+onMounted(() => {
+    getTransaksi()
+
+})
 </script>
 
 <style scoped>

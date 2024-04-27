@@ -1,14 +1,14 @@
 <template>
     <div class="container-fluid">
         <h2 class="mt-5 fw-bold">Kelola Obat</h2>
-        <p>Menampilkan : 1 obat</p>
+        <p>Menampilkan : {{ jmlObat }} obat</p>
 
         <div class="row d-flex justify-content-center">
             <div class="col-md-7 input">
-                <div class="input-group flex-nowrap rounded">
-                    <input type="search" class="form-control" placeholder="Cari" aria-label="Search" aria-describedby="search-addon"/>
+                <from @submit.prevent="getObat" class="input-group flex-nowrap rounded">
+                    <input v-model="keyword" type="search" class="form-control" placeholder="Cari" aria-label="Search" aria-describedby="search-addon"/>
                     <span class="input-group-text bg-white"><i class="bi bi-search search"></i></span> 
-                </div>
+                </from>
             </div>
             <div class="col-md-1">
                 <div class="text-center">
@@ -38,7 +38,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(obats, i) in obats" :key="i">
+                                    <tr v-for="(obat, i) in obats" :key="i">
                                         <td>{{ i + 1 }}</td>
                                         <td>{{ obat.kode_obat }}</td>
                                         <td>{{ obat.nama_obat }}</td>
@@ -58,16 +58,31 @@
 
 <script setup>
 const supabase = useSupabaseClient()
+const jmlObat = ref (0)
 const obats = ref([])
+const keyword = ref ('')
+
 
 const getObat = async () => { 
     const { data, error } = await supabase
         .from('Obat')
         .select('*')
         .order('id', { ascending: false })
-        .ilike('nama_nbat', `%${keyword.value}`)
+        // .ilike('nama_obat', `%${keyword.value}`)
     if(data) obats.value = data
 }
+
+const getjmlObat = async () => {
+    const { data, count } = await supabase
+    .from('Obat')
+    .select('*', { count: 'exact' })
+    if(data) jmlObat.value = count;
+}
+
+onMounted(() => {
+    getObat()
+    getjmlObat()
+})
 </script>
 
 <style scoped>

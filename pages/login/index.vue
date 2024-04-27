@@ -8,12 +8,12 @@
                         <div class="text-center">
                             <img src="~/assets/img/logo-apotek.png" alt="logo">
                             <h1 class="fw-bold mt-3">Login</h1>
-                            <form @submit.prevent="signIn" action="" class="mt-5 p-3">
+                            <form @submit.prevent="signIn" class="mt-5 p-3">
                                 <div class="mb-3">
-                                    <input v-model="email" type="email" class="form-control" id="exampleFormControlInput1" placeholder="E-mail">
+                                    <input v-model="email" type="email" class="form-control" placeholder="E-mail">
                                 </div>
                                 <div class="mb-3">
-                                    <input v-model="password" type="password" class="form-control" id="exampleFormControlInput1" placeholder="Password">
+                                    <input v-model="password" type="password" class="form-control" placeholder="Password">
                                 </div>
                                 <button type="submit" class="btn btn-primary mt-3">Login</button>
                             </form>
@@ -42,12 +42,13 @@ async function signIn () {
         insertLog(user)
     }
 }
+
 async function insertLog(user) {
-    const { error } = await supa
+    const { error } = await supabase
     .from('LogActivity')
     .insert({
-        Aktifitas: 'Login',
-        nama: user.value.user_metadata.nama
+        aktivitas: 'Login',
+        username: user.value.user_metadata.username
     })
     if (error) throw error
 }

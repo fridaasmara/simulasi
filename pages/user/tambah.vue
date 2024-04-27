@@ -5,7 +5,7 @@
             <div class="col-lg-6 offset-md-3">
                 <div class="card shadow mb-5">
                     <div class="card-body">
-                        <form @submit.prevent="createUser()" action="" class="p-5">
+                        <form @submit.prevent="createUser()" class="p-5">
                             <div class="text-center">
                                 <h3 class="mb-4 fw-semibold">Tambah User</h3>
                             </div>
@@ -49,9 +49,7 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <nuxt-link to="/user">
-                                    <button type="submit" class="btn btn-primary mt-5">Kirim</button>
-                                </nuxt-link>
+                                <button type="submit" class="btn btn-primary mt-5">Kirim</button>
                             </div>
                         </form>
                     </div>
@@ -90,7 +88,7 @@ async function createUser() {
 }
 
 async function insertUser(dataUser) {
-    const { error } = await supabase.from('User').insert({
+    const { error } = await supabase.from('Users').insert({
         id: userData.id,
         tipe_user: form.value.tipe_user,
         nama: from.value.nama,

@@ -47,7 +47,8 @@
                                         <td>{{ resep.nama_pasien }}</td>
                                         <td>{{ resep.nama_dokter }}</td>
                                         <td>{{ resep.resep_obat }}</td>
-                                        <td>{{ resep.jumlah }}</td>
+                                        <td>{{ resep.Obat.nama_obat }}</td>
+                                        <td>{{ resep.jumlah_obat }}</td>
                                         <td><button><i class="bi bi-x-circle text-danger"></i></button></td>
                                     </tr>
                                 </tbody>
@@ -62,6 +63,7 @@
 
 <script setup>
 const supabase = useSupabaseClient()
+const obats = ref ([])
 const reseps = ref ([])
 const jmlResep = ref (0)
 const keyword = ref ('')
@@ -81,6 +83,11 @@ const getjmlResep = async () => {
     .select('*', { count: 'exact' })
     if(data) jmlResep.value = count;
 }
+
+onMounted(() => {
+    getResep()
+    getjmlResep()
+})
 
 </script>
 

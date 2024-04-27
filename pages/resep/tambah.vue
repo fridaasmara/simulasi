@@ -5,17 +5,13 @@
             <div class="col-lg-6 offset-md-3">
                 <div class="card shadow mb-5">
                     <div class="card-body">
-                        <form @submit.prevent="tambahResep" action="" class="p-5">
+                        <form @submit.prevent="tambahResep" class="p-5">
                             <div class="text-center">
                                 <h3 class="mb-4 fw-semibold">Tambah Resep</h3>
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">No Resep</label>
                                 <input v-model="form.no_resep" type="text" class="form-control" id="exampleFormControlInput1">
-                            </div>
-                            <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Tanggal Resep</label>
-                                <input v-model="form.tgl_resep" type="date" class="form-control" id="exampleFormControlInput1">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Nama Pasien</label>
@@ -29,20 +25,20 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="exampleFormControlInput1" class="form-label">Resep Obat</label>
-                                        <input v-model="form.resep_obat" type="text" class="form-control" id="exampleFormControlInput1">
+                                        <select v-model="form.resep_obat" class="form-select" aria-label="Default select example">
+                                            <option v-for="obat in obats" :value="obat.id">{{ obat.nama_obat }}</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="exampleFormControlInput1" class="form-label">Jumlah</label>
-                                        <input v-model="form.jumlah" type="number" class="form-control" id="exampleFormControlInput1">
+                                        <input v-model="form.jumlah_obat" type="number" class="form-control" id="exampleFormControlInput1">
                                     </div>
                                 </div>
                             </div>
                             <div class="text-center">
-                                <nuxt-link to="/obat">
-                                    <button type="submit" class="btn btn-primary mt-5">Kirim</button>
-                                </nuxt-link>
+                                <button type="submit" class="btn btn-primary mt-5">Kirim</button>
                             </div>
                         </form>
                     </div>
@@ -54,13 +50,13 @@
 
 <script setup>
 const supabase = useSupabaseClient()
-const form = ({
-    tgl_resep: "",
+const obats = ref ([])
+const form = ref ({
     no_resep: "",
     nama_pasien: "",
     nama_dokter: "",
     resep_obat: "",
-    jumlah: ""
+    jumlah_obat: ""
 })
 
 const tambahResep = async () => {
@@ -69,9 +65,18 @@ const tambahResep = async () => {
         .insert([
             form.value
         ])
-
+    console.log(error)
     if(!error) navigateTo('/resep')
 }
+
+async function selectObat() {
+    const { data, error } = await supabase.from('Obat').select()
+    if(data) obats.value = data
+}
+
+onMounted(() => {
+    selectObat()
+})
 </script>
 
 <style scoped>

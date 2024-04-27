@@ -5,7 +5,7 @@
             <div class="col-lg-6 offset-md-3">
                 <div class="card shadow mb-5">
                     <div class="card-body">
-                        <form @submit.prevent="tambahObat" action="" class="p-5">
+                        <form @submit.prevent="tambahObat" class="p-5">
                             <div class="text-center">
                                 <h3 class="mb-4 fw-semibold">Tambah Obat</h3>
                             </div>
@@ -36,9 +36,7 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <nuxt-link to="/obat">
-                                    <button type="submit" class="btn btn-primary mt-5">Kirim</button>
-                                </nuxt-link>
+                                <button type="submit" class="btn btn-primary mt-5">Kirim</button>
                             </div>
                         </form>
                     </div>

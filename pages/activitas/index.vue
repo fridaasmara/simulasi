@@ -24,7 +24,7 @@
                                         <td>{{ log.tanggal }}</td>
                                         <td>{{ log.waktu }}</td>
                                         <td>{{ log.username }}</td>
-                                        <td>{{ log.Aktivitas }}</td>
+                                        <td>{{ log.aktivitas }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -48,7 +48,7 @@ const jmlLogAct = ref (0)
 
 async function getLog() {
     const { data, error } = await supabase
-        .from('LogActifity')
+        .from('LogActivity')
         .select('*')
         .order('id', { ascending: false })
     if(data) logs.value = data

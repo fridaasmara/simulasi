@@ -17,9 +17,9 @@ async function logout() {
 async function insertLog() {
     const user = useSupabaseUser()
     const { error } = await supabase
-    .from('LogAcvifity')
+    .from('LogActivity')
     .insert([{
-        Aktifitas: 'Logout',
+        aktivitas: 'Logout',
         username: user.value.user_metadata.username
     }])
 
