@@ -1,0 +1,70 @@
+<template>
+        <nav class="navbar navbar-expand-lg bg-white sticky-top shadow">
+            <div class="container-fluid">
+                <i class="bi bi-person-rolodex fs-1"></i>
+                <h1 class="navbar-brand fw-bold">Admin</h1>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <nuxt-link to="/" class="nav-link">Home</nuxt-link>
+                    </li>
+                    <li class="nav-item">
+                        <nuxt-link to="/activitas" class="nav-link">Log Activity</nuxt-link>
+                    </li>
+                    <li class="nav-item">
+                        <nuxt-link to="/user" class="nav-link">User</nuxt-link>
+                    </li>
+                    <li class="nav-item">
+                        <nuxt-link to="/obat" class="nav-link">Obat</nuxt-link>
+                    </li>
+                    <li class="nav-item">
+                        <nuxt-link to="/resep" class="nav-link">Resep</nuxt-link>
+                    </li>
+                    <li class="nav-item">
+                        <nuxt-link to="/laporan" class="nav-link">Laporan</nuxt-link>
+                    </li>
+                    <li class="nav-item">
+                        <nuxt-link to="/logout" class="nav-link text-danger">Logout</nuxt-link>
+                    </li>
+                </ul>
+                </div>
+            </div>
+        </nav>
+</template>
+
+<script setup>
+
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Kavoon&family=Miltonian+Tattoo&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Red+Rose:wght@300..700&display=swap');
+
+.navbar {
+    height: 5rem;
+}
+
+.nav-item {
+    font-size: 1rem;
+    margin-right: 2rem;
+}
+
+h1 {
+    margin-top: 1rem;
+    margin-left: 1.5rem;
+    font-size: 2rem;
+
+}
+
+i {
+    margin-left: 2rem;
+}
+
+h1, .nav-item {
+    font-family: "Poppins", sans-serif;
+
+}
+
+</style>
