@@ -7,7 +7,28 @@
 </template>
 
 <script setup>
+const supabase = useSupabaseClient()
 
+async function logout() {
+    const { error } = await supabase.auth.signOut()
+    if(!error) navigateTo("/login")
+}
+
+async function insertLog() {
+    const user = useSupabaseUser()
+    const { error } = await supabase
+    .from('LogAcvifity')
+    .insert([{
+        Aktifitas: 'Logout',
+        username: user.value.user_metadata.username
+    }])
+
+    if(!error) logout()
+}
+
+onMounted(() => {
+    insertLog()
+})
 </script>
 
 <style scoped>

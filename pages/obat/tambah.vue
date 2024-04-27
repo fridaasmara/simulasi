@@ -5,39 +5,39 @@
             <div class="col-lg-6 offset-md-3">
                 <div class="card shadow mb-5">
                     <div class="card-body">
-                        <form action="" class="p-5">
+                        <form @submit.prevent="tambahObat" action="" class="p-5">
                             <div class="text-center">
                                 <h3 class="mb-4 fw-semibold">Tambah Obat</h3>
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Kode Obat</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1">
+                                <input v-model="form.kode_obat" type="text" class="form-control" id="exampleFormControlInput1">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Nama Obat</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1">
+                                <input v-model="form.nama_obat" type="text" class="form-control" id="exampleFormControlInput1">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Expired Date</label>
-                                <input type="date" class="form-control" id="exampleFormControlInput1">
+                                <input v-model="form.expired_date" type="date" class="form-control" id="exampleFormControlInput1">
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="exampleFormControlInput1" class="form-label">Jumlah</label>
-                                        <input type="number" class="form-control" id="exampleFormControlInput1">
+                                        <input v-model="form.jumlah" type="number" class="form-control" id="exampleFormControlInput1">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="exampleFormControlInput1" class="form-label">Harga</label>
-                                        <input type="number" class="form-control" id="exampleFormControlInput1">
+                                        <input v-model="form.harga" type="number" class="form-control" id="exampleFormControlInput1">
                                     </div>
                                 </div>
                             </div>
                             <div class="text-center">
                                 <nuxt-link to="/obat">
-                                    <button class="btn btn-primary mt-5">Kirim</button>
+                                    <button type="submit" class="btn btn-primary mt-5">Kirim</button>
                                 </nuxt-link>
                             </div>
                         </form>
@@ -49,7 +49,25 @@
 </template>
 
 <script setup>
+const supabase = useSupabaseClient()
+const form = ref ({
+    kode_obat: "",
+    nama_obat: "",
+    expired_date: "",
+    jumlah: "",
+    harga: "",
+})
 
+const tambahObat = async () => {
+    const { error } = await supabase
+        .from('Obat')
+        .insert([
+            form.value,
+        ])
+
+    if(!error) navigateTo ('/obat')
+
+}
 </script>
 
 <style scoped>

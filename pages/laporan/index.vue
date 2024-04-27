@@ -38,10 +38,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>27/02/2024</td>
-                                        <td>7000</td>
+                                    <tr v-for="(laporan, i) in laporans" :key="i">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ laporan.Tgl_Transaksi }}</td>
+                                        <td>Rp. {{ laporan.Total_Bayar }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -54,7 +54,22 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: 'auth'
+})
 
+const supabase = useSupabaseClient()
+const laporans = ref ([])
+
+async function getLaporan() {
+    const { data, error } = await supabase
+        .from('Transaksi')
+        .select('*')
+        .order('id', { ascending: false })
+    if(data) laporans.value = data
+}
+
+onMounted(() => getLaporan())
 </script>
 
 <style scoped>

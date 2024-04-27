@@ -9,10 +9,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <nuxt-link to="/" class="nav-link">Home</nuxt-link>
+                    <nuxt-link to="/" class="nav-link" :class="{ active: route.name == '/' }">Home</nuxt-link>
                 </li>
                 <li class="nav-item">
-                    <nuxt-link to="/transaksi" class="nav-link">Transaksi</nuxt-link>
+                    <nuxt-link to="/transaksi" class="nav-link" :class="{ active: route.name == 'transaksi' }">Transaksi</nuxt-link>
                 </li>
                 <li class="nav-item">
                     <nuxt-link to="/logout" class="nav-link text-danger">Logout</nuxt-link>
@@ -24,6 +24,7 @@
 </template>
 
 <script setup>
+const route = useRoute()
 
 </script>
 

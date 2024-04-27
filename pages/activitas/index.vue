@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <h2 class="mt-5 fw-bold">Log Activity</h2>
-        <p>Menampilkan : 1 activitas</p>
+        <p>Menampilkan : {{ jmlLogAct }} activitas</p>
 
         <div class="row p-5">
             <div class="col">
@@ -19,12 +19,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>27/02/2024</td>
-                                        <td>10 : 50</td>
-                                        <td>Admin01</td>
-                                        <td>Login</td>
+                                    <tr v-for="(log, i) in logs" :key="i">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ log.tanggal }}</td>
+                                        <td>{{ log.waktu }}</td>
+                                        <td>{{ log.username }}</td>
+                                        <td>{{ log.Aktivitas }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -37,6 +37,34 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: 'auth'
+})
+
+const supabase = useSupabaseClient()
+
+const logs = ref([])
+const jmlLogAct = ref (0)
+
+async function getLog() {
+    const { data, error } = await supabase
+        .from('LogActifity')
+        .select('*')
+        .order('id', { ascending: false })
+    if(data) logs.value = data
+}
+
+const getjmlLogAct = async () => {
+    const { data, count } = await supabase
+    .from('LogActivity')
+    .select('*', { count: 'exact' })
+    if(data) jmlLogAct.value = count;
+}
+
+onMounted(() => {
+    getLog()
+    getjmlLogAct()
+})
 
 </script>
 

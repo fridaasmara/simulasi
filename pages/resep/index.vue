@@ -1,14 +1,14 @@
 <template>
     <div class="container-fluid">
         <h2 class="mt-5 fw-bold">Kelola Resep</h2>
-        <p>Menampilkan : 1 resep</p>
+        <p>Menampilkan : {{ jmlResep }} resep</p>
 
         <div class="row d-flex justify-content-center">
             <div class="col-md-7 input">
-                <div class="input-group flex-nowrap rounded">
-                    <input type="search" class="form-control" placeholder="Cari" aria-label="Search" aria-describedby="search-addon"/>
+                <form @submit.prevent="getResep" class="input-group flex-nowrap rounded">
+                    <input v-model="keyword" type="search" class="form-control" placeholder="Cari" aria-label="Search" aria-describedby="search-addon"/>
                     <span class="input-group-text bg-white"><i class="bi bi-search search"></i></span> 
-                </div>
+                </form>
             </div>
             <div class="col-md-1">
                 <div class="text-center">
@@ -40,15 +40,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>R001</td>
-                                        <td>27/04/2024</td>
-                                        <td>Dita</td>
-                                        <td>Dr. Indah</td>
-                                        <td>Amoxan</td>
-                                        <td>2</td>
-                                        <td><i class="bi bi-x-circle text-danger"></i></td>
+                                    <tr v-for="(resep, i) in reseps" :key="i">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ resep.no_resep }}</td>
+                                        <td>{{ resep.tgl_resep }}</td>
+                                        <td>{{ resep.nama_pasien }}</td>
+                                        <td>{{ resep.nama_dokter }}</td>
+                                        <td>{{ resep.resep_obat }}</td>
+                                        <td>{{ resep.jumlah }}</td>
+                                        <td><button><i class="bi bi-x-circle text-danger"></i></button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -61,6 +61,26 @@
 </template>
 
 <script setup>
+const supabase = useSupabaseClient()
+const reseps = ref ([])
+const jmlResep = ref (0)
+const keyword = ref ('')
+
+const getResep = async () => { 
+    const { data, error } = await supabase
+        .from('Resep')
+        .select('*')
+        .order('id', { ascending: false })
+        .ilike('no_resep', `%${keyword.value}`)
+    if(data) reseps.value = data
+}
+
+const getjmlResep = async () => {
+    const { data, count } = await supabase
+    .from('Resep')
+    .select('*', { count: 'exact' })
+    if(data) jmlResep.value = count;
+}
 
 </script>
 

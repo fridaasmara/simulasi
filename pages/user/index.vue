@@ -63,7 +63,19 @@
 </template>
 
 <script setup>
+definePageMeta ({
+    middleware: 'auth'
+})
 
+const supabase = useSupabaseClient()
+const user = useSupabaseUser()
+const keyword = ref ('')
+
+const { data: users, refresh } = useAsyncData('users', async () => {
+    const { data } = await supabase.from('Users').select()
+
+    return data
+})
 </script>
 
 <style scoped>

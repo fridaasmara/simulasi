@@ -5,13 +5,13 @@
             <div class="col-lg-6 offset-md-3">
                 <div class="card shadow mb-5">
                     <div class="card-body">
-                        <form action="" class="p-5">
+                        <form @submit.prevent="createUser()" action="" class="p-5">
                             <div class="text-center">
                                 <h3 class="mb-4 fw-semibold">Tambah User</h3>
                             </div>
                             <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Tipe User</label>
-                                <select class="form-select" aria-label="Default select example">
+                                <label for="exampleFormControlInput1"  class="form-label">Tipe User</label>
+                                <select v-model="form.tipe_user" class="form-select" aria-label="Default select example">
                                     <option value=""></option>
                                     <option value="Admin">Admin</option>
                                     <option value="Apoteker">Apoteker</option>
@@ -19,38 +19,38 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Nama</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1">
+                                <label for="exampleFormControlInput1"  class="form-label">Nama</label>
+                                <input v-model="form.nama" type="text" class="form-control">
                             </div>
                             <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Alamat</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1">
+                                <label for="exampleFormControlInput1"  class="form-label">Alamat</label>
+                                <input v-model="form.alamat" type="text" class="form-control">
                             </div>
                             <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Telepon</label>
-                                <input type="number" class="form-control" id="exampleFormControlInput1">
+                                <label for="exampleFormControlInput1"  class="form-label">Telepon</label>
+                                <input v-model="form.telepon" type="number" class="form-control">
                             </div>
                             <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1">
+                                <label for="exampleFormControlInput1"  class="form-label">Username</label>
+                                <input v-model="form.username" type="text" class="form-control">
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="exampleFormControlInput1">
+                                        <label for="exampleFormControlInput1"  class="form-label">Email</label>
+                                        <input v-model="form.email" type="email" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="exampleFormControlInput1">
+                                        <label for="exampleFormControlInput1"  class="form-label">Password</label>
+                                        <input v-model="form.password" type="password" class="form-control">
                                     </div>
                                 </div>
                             </div>
                             <div class="text-center">
                                 <nuxt-link to="/user">
-                                    <button class="btn btn-primary mt-5">Kirim</button>
+                                    <button type="submit" class="btn btn-primary mt-5">Kirim</button>
                                 </nuxt-link>
                             </div>
                         </form>
@@ -62,7 +62,50 @@
 </template>
 
 <script setup>
+const supabase = useSupabaseClient()
+const form = ref({
+    tipe_user: "",
+    nama: "",
+    alamat: "",
+    telepon: "",
+    username: "",
+    email: "",
+    password: "",
+})
 
+async function createUser() {
+    const { data } = await $fetch('/api/user', {
+        method: POST,
+        body: {
+            tipe_user: form.value.tipe_user,
+            nama: from.value.nama,
+            alamat: form.value.alamat,
+            telepon: form.value.telepon,
+            username: form.username.username,
+            email: form.value.email,
+            password: form.value.password
+        },  
+    })
+    insertUser(data.user)
+}
+
+async function insertUser(dataUser) {
+    const { error } = await supabase.from('User').insert({
+        id: userData.id,
+        tipe_user: form.value.tipe_user,
+        nama: from.value.nama,
+        alamat: form.value.alamat,
+        telepon: form.value.telepon,
+        username: form.username.username,
+        email: form.value.email,
+        password: form.value.password
+    })
+
+    if(!error) throw error
+    else {
+        navigateTo('/user')
+    }
+}
 </script>
 
 <style scoped>

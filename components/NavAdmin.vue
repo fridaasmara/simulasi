@@ -9,22 +9,22 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <nuxt-link to="/" class="nav-link">Home</nuxt-link>
+                        <nuxt-link to="/" class="nav-link" :class="{ active: route.name == '/' }">Home</nuxt-link>
                     </li>
                     <li class="nav-item">
-                        <nuxt-link to="/activitas" class="nav-link">Log Activity</nuxt-link>
+                        <nuxt-link to="/activitas" class="nav-link" :class="{ active: route.name == 'activitas' }">Log Activity</nuxt-link>
                     </li>
                     <li class="nav-item">
-                        <nuxt-link to="/user" class="nav-link">User</nuxt-link>
+                        <nuxt-link to="/user" class="nav-link" :class="{ active: route.name == 'user' }">User</nuxt-link>
                     </li>
                     <li class="nav-item">
-                        <nuxt-link to="/obat" class="nav-link">Obat</nuxt-link>
+                        <nuxt-link to="/obat" class="nav-link" :class="{ active: route.name == 'obat' }">Obat</nuxt-link>
                     </li>
                     <li class="nav-item">
-                        <nuxt-link to="/resep" class="nav-link">Resep</nuxt-link>
+                        <nuxt-link to="/resep" class="nav-link" :class="{ active: route.name == 'resep' }">Resep</nuxt-link>
                     </li>
                     <li class="nav-item">
-                        <nuxt-link to="/laporan" class="nav-link">Laporan</nuxt-link>
+                        <nuxt-link to="/laporan" class="nav-link" :class="{ active: route.name == 'laporan' }">Laporan</nuxt-link>
                     </li>
                     <li class="nav-item">
                         <nuxt-link to="/logout" class="nav-link text-danger">Logout</nuxt-link>
@@ -36,6 +36,7 @@
 </template>
 
 <script setup>
+const route = useRoute()
 
 </script>
 

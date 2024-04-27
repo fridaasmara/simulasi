@@ -38,13 +38,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Amox02</td>
-                                        <td>Amoxan</td>
-                                        <td>27/04/2026</td>
-                                        <td>100</td>
-                                        <td>7000</td>
+                                    <tr v-for="(obats, i) in obats" :key="i">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ obat.kode_obat }}</td>
+                                        <td>{{ obat.nama_obat }}</td>
+                                        <td>{{ obat.expired_date }}</td>
+                                        <td>{{ obat.jumlah }}</td>
+                                        <td>{{ obat.harga }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -57,7 +57,17 @@
 </template>
 
 <script setup>
+const supabase = useSupabaseClient()
+const obats = ref([])
 
+const getObat = async () => { 
+    const { data, error } = await supabase
+        .from('Obat')
+        .select('*')
+        .order('id', { ascending: false })
+        .ilike('nama_nbat', `%${keyword.value}`)
+    if(data) obats.value = data
+}
 </script>
 
 <style scoped>
