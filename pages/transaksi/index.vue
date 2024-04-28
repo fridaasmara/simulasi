@@ -79,7 +79,7 @@ const trans = ref ([])
 const getTransaksi = async () => { 
     const { data, error } = await supabase
         .from('Transaksi')
-        .select('*')
+        .select(`*, Resep(*)`)
         .order('id', { ascending: false })
     if(data) trans.value = data
 }

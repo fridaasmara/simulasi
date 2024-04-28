@@ -46,7 +46,6 @@
                                         <td>{{ resep.tgl_resep }}</td>
                                         <td>{{ resep.nama_pasien }}</td>
                                         <td>{{ resep.nama_dokter }}</td>
-                                        <td>{{ resep.resep_obat }}</td>
                                         <td>{{ resep.Obat.nama_obat }}</td>
                                         <td>{{ resep.jumlah_obat }}</td>
                                         <td><button><i class="bi bi-x-circle text-danger"></i></button></td>
@@ -71,7 +70,7 @@ const keyword = ref ('')
 const getResep = async () => { 
     const { data, error } = await supabase
         .from('Resep')
-        .select('*')
+        .select(`*, Obat(*)`)
         .order('id', { ascending: false })
         .ilike('no_resep', `%${keyword.value}`)
     if(data) reseps.value = data

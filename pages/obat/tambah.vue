@@ -2,7 +2,7 @@
     <div class="container-flud">
         <h2 class="mt-5 fw-bold">Kelola Obat</h2>
         <div class="row pt-5">
-            <div class="col-lg-6 offset-md-3">
+            <div class="col-md-6 offset-md-3">
                 <div class="card shadow mb-5">
                     <div class="card-body">
                         <form @submit.prevent="tambahObat" class="p-5">

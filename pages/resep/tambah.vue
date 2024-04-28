@@ -2,10 +2,10 @@
     <div class="container-flud">
         <h2 class="mt-5 fw-bold">Kelola Resep</h2>
         <div class="row pt-5">
-            <div class="col-lg-6 offset-md-3">
-                <div class="card shadow mb-5">
+            <div class="col-md-6 offset-md-3">
+                <div class="card shadow mb-5 p-5">
                     <div class="card-body">
-                        <form @submit.prevent="tambahResep" class="p-5">
+                        <form @submit.prevent="tambahResep" class="rounded">
                             <div class="text-center">
                                 <h3 class="mb-4 fw-semibold">Tambah Resep</h3>
                             </div>
@@ -84,7 +84,7 @@ onMounted(() => {
 
 
 label {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
 }
 
 h2 {

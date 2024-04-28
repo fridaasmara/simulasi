@@ -2,7 +2,7 @@
     <div class="container-flud">
         <h2 class="mt-5 fw-bold">Kelola Transaksi</h2>
         <div class="row pt-5">
-            <div class="col-lg-6 offset-md-3">
+            <div class="col-md-6 offset-md-3">
                 <div class="card shadow mb-5">
                     <div class="card-body">
                         <form @submit.prevent="tambahTransaksi" class="p-5">
@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <input v-model="form.total_bayar" type="number" class="form-control" id="exampleFormControlInput1">
+                                        <input v-model="form.total_bayar" type="number" class="form-control">
                                     </div>
                                 </div>
                             </div>

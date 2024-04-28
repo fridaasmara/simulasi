@@ -2,10 +2,10 @@
     <div class="container-flud">
         <h2 class="mt-5 fw-bold">Kelola User</h2>
         <div class="row pt-5">
-            <div class="col-lg-6 offset-md-3">
+            <div class="col-md-6 offset-md-3">
                 <div class="card shadow mb-5">
                     <div class="card-body">
-                        <form @submit.prevent="createUser()" class="p-5">
+                        <form @submit.prevent="tambahUser" class="p-5">
                             <div class="text-center">
                                 <h3 class="mb-4 fw-semibold">Tambah User</h3>
                             </div>
@@ -71,39 +71,77 @@ const form = ref({
     password: "",
 })
 
-async function createUser() {
-    const { data } = await $fetch('/api/user', {
-        method: POST,
-        body: {
-            tipe_user: form.value.tipe_user,
-            nama: from.value.nama,
-            alamat: form.value.alamat,
-            telepon: form.value.telepon,
-            username: form.username.username,
-            email: form.value.email,
-            password: form.value.password
-        },  
-    })
-    insertUser(data.user)
-}
+async function tambahUser() {
+    // console.log(form.value)
 
-async function insertUser(dataUser) {
-    const { error } = await supabase.from('Users').insert({
-        id: userData.id,
-        tipe_user: form.value.tipe_user,
-        nama: from.value.nama,
-        alamat: form.value.alamat,
-        telepon: form.value.telepon,
-        username: form.username.username,
+    const { data, error } = await supabase.auth.signUp({
         email: form.value.email,
-        password: form.value.password
+        password: form.value.password,
+        options: {
+            data: {
+                tipe_user: form.value.tipe_user,
+                nama: form.value.nama,
+                alamat: form.value.alamat,
+                telepon: form.value.telepon,
+                username: form.value.username
+            }
+        }
     })
 
-    if(!error) throw error
-    else {
-        navigateTo('/user')
+    if(data) {
+        insertUser()
     }
+    // if(error) throw error
 }
+
+// async function createUser() {
+//     const { data } = await $fetch('/api/user', {
+//         method: POST,
+//         body: {
+//             tipe_user: form.value.tipe_user,
+//             nama: from.value.nama,
+//             alamat: form.value.alamat,
+//             telepon: form.value.telepon,
+//             username: form.username.username,
+//             email: form.value.email,
+//             password: form.value.password
+//         },  
+//     })
+//     insertUser(data.user)
+// }
+
+async function insertUser() {
+  const { error } = await supabase.from("Users").insert({
+    id: user.value.id,
+    tipe_user: form.value.tipe_user,
+    nama: from.value.nama,
+    alamat: form.value.alamat,
+    telepon: form.value.telepon,
+    username: form.value.username,
+    email: form.value.email,
+    password: form.value.password,
+  });
+  if (error) throw error;
+  if (data) navigateTo("/login");
+}
+
+// async function insertUser(dataUser) {
+//     const { error } = await supabase.from('Users').insert({
+//         id: userData.id,
+//         tipe_user: form.value.tipe_user,
+//         nama: from.value.nama,
+//         alamat: form.value.alamat,
+//         telepon: form.value.telepon,
+//         username: form.username.username,
+//         email: form.value.email,
+//         password: form.value.password
+//     })
+
+//     if(!error) throw error
+//     else {
+//         navigateTo('/user')
+//     }
+// }
 </script>
 
 <style scoped>

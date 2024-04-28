@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg bg-transparent sticky-top shadow">
+    <nav class="navbar navbar-expand-lg bg-transparent sticky-top shadow p-3">
         <div class="container-fluid">
             <i class="bi bi-cash-coin fs-1"></i>
             <h1 class="navbar-brand fw-bold">Kasir</h1>
@@ -31,9 +31,6 @@ const route = useRoute()
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Kavoon&family=Miltonian+Tattoo&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Red+Rose:wght@300..700&display=swap');
 
-.navbar {
-height: 5rem;
-}
 
 .nav-item {
 font-size: 1rem;

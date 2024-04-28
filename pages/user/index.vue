@@ -41,7 +41,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr v-for="(user, index) in users">
                                         <td>1</td>
                                         <td>Admin</td>
                                         <td>Frida</td>
@@ -76,6 +76,7 @@ const { data: users, refresh } = useAsyncData('users', async () => {
 
     return data
 })
+
 </script>
 
 <style scoped>
