@@ -3,9 +3,9 @@
         <Header />
         
         <span v-if="user">
-            <NavAdmin v-if="user.user_metadata.tipe_user === 'admin'" />
-            <NavApoteker v-if="user.user_metadata.tipe_user === 'apoteker'" />
-            <NavKasir v-if="user.user_metadata.tipe_user === 'kasir'" />
+            <NavAdmin v-if="user.user_metadata.tipe_user === 'Admin'" />
+            <NavApoteker v-if="user.user_metadata.tipe_user === 'Apoteker'" />
+            <NavKasir v-if="user.user_metadata.tipe_user === 'Kasir'" />
         </span>
 
         <slot />

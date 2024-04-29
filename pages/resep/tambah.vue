@@ -26,7 +26,7 @@
                                     <div class="mb-3">
                                         <label for="exampleFormControlInput1" class="form-label">Resep Obat</label>
                                         <select v-model="form.resep_obat" class="form-select" aria-label="Default select example">
-                                            <option v-for="obat in obats" :value="obat.id">{{ obat.nama_obat }}</option>
+                                            <option v-for="obat in obats" :value="obat.id"> {{ obat.nama_obat }} </option>
                                         </select>
                                     </div>
                                 </div>
@@ -49,6 +49,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+    middleware: 'auth'
+})
+
 const supabase = useSupabaseClient()
 const obats = ref ([])
 const form = ref ({
@@ -56,27 +60,26 @@ const form = ref ({
     nama_pasien: "",
     nama_dokter: "",
     resep_obat: "",
-    jumlah_obat: ""
+    jumlah_obat: ""  
 })
 
 const tambahResep = async () => {
-    const { error } = await supabase
+    const { data, error } = await supabase
         .from('Resep')
-        .insert([
+        .insert ([
             form.value
         ])
-    console.log(error)
     if(!error) navigateTo('/resep')
 }
 
-async function selectObat() {
-    const { data, error } = await supabase.from('Obat').select()
+async function selectObat () {
+    const { data, error } = await supabase 
+        .from('Obat')
+        .select()
     if(data) obats.value = data
 }
 
-onMounted(() => {
-    selectObat()
-})
+onMounted(() => selectObat())
 </script>
 
 <style scoped>

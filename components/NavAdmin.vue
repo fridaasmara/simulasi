@@ -1,5 +1,5 @@
 <template>
-        <nav class="navbar navbar-expand-lg bg-white sticky-top shadow p-3">
+        <nav class="navbar navbar-expand-lg bg-white sticky-top shadow p-2">
             <div class="container-fluid">
                 <i class="bi bi-person-rolodex fs-1"></i>
                 <h1 class="navbar-brand fw-bold">Admin</h1>

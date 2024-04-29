@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <h2 class="mt-5 fw-bold">Laporan</h2>
+        <h2 class="mt-5 fw-bold">Kelola Laporan</h2>
         <div class="text-center">
             <h4 class="mt-5 fw-semibold">Laporan Penjualan</h4>
         </div>
@@ -16,7 +16,7 @@
             <div class="col-md-3">
                 <div class="text-center">
                     <nuxt-link to="../obat/tambah">
-                        <button class="btn add">
+                        <button class="btn bg-primary text-white">
                             Cari
                         </button>
                     </nuxt-link>
@@ -40,8 +40,8 @@
                                 <tbody>
                                     <tr v-for="(laporan, i) in laporans" :key="i">
                                         <td>{{ i + 1 }}</td>
-                                        <td>{{ laporan.Tgl_Transaksi }}</td>
-                                        <td>Rp. {{ laporan.Total_Bayar }}</td>
+                                        <td>{{ laporan.tgl_transaksi }}</td>
+                                        <td>{{ laporan.total_bayar }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -55,21 +55,21 @@
 
 <script setup>
 definePageMeta({
-  middleware: 'auth'
+    middleware: 'auth'
 })
 
 const supabase = useSupabaseClient()
-const laporans = ref ([])
+const laporans = ref([])
 
-async function getLaporan() {
-    const { data, error } = await supabase
+async function getlaporans () {
+    const { data, error } = await supabase 
         .from('Transaksi')
         .select('*')
         .order('id', { ascending: false })
     if(data) laporans.value = data
 }
 
-onMounted(() => getLaporan())
+onMounted (() => getlaporans())
 </script>
 
 <style scoped>
@@ -95,7 +95,6 @@ p, .btn {
     margin-right: 18rem;
     margin-top: 0.5rem;
     width: 7rem;
-    background-color: aliceblue;
 }
 
 th {

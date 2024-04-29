@@ -25,7 +25,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="exampleFormControlInput1" class="form-label">Jumlah</label>
-                                        <input v-model="form.jumlah" type="number" class="form-control" id="exampleFormControlInput1">
+                                        <input v-model="jumlah" type="number" class="form-control" id="exampleFormControlInput1">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -53,18 +53,16 @@ const form = ref ({
     nama_obat: "",
     expired_date: "",
     jumlah: "",
-    harga: "",
+    harga: ""
 })
 
 const tambahObat = async () => {
-    const { error } = await supabase
+    const { data, error } = await supabase
         .from('Obat')
-        .insert([
-            form.value,
+        .insert ([
+            form.value
         ])
-
-    if(!error) navigateTo ('/obat')
-
+    if(!error) navigateTo('/obat')
 }
 </script>
 

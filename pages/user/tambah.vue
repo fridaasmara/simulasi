@@ -61,6 +61,7 @@
 
 <script setup>
 const supabase = useSupabaseClient()
+const user = useSupabaseUser()
 const form = ref({
     tipe_user: "",
     nama: "",
@@ -72,7 +73,6 @@ const form = ref({
 })
 
 async function tambahUser() {
-    // console.log(form.value)
 
     const { data, error } = await supabase.auth.signUp({
         email: form.value.email,
@@ -87,34 +87,19 @@ async function tambahUser() {
             }
         }
     })
-
+    if(error) throw error
     if(data) {
-        insertUser()
-    }
-    // if(error) throw error
+        insertUser(data.user.id)
+    } else refresh()
 }
 
-// async function createUser() {
-//     const { data } = await $fetch('/api/user', {
-//         method: POST,
-//         body: {
-//             tipe_user: form.value.tipe_user,
-//             nama: from.value.nama,
-//             alamat: form.value.alamat,
-//             telepon: form.value.telepon,
-//             username: form.username.username,
-//             email: form.value.email,
-//             password: form.value.password
-//         },  
-//     })
-//     insertUser(data.user)
-// }
 
-async function insertUser() {
+
+async function insertUser(userId) {
   const { error } = await supabase.from("Users").insert({
-    id: user.value.id,
+    id: userId,
     tipe_user: form.value.tipe_user,
-    nama: from.value.nama,
+    nama: form.value.nama,
     alamat: form.value.alamat,
     telepon: form.value.telepon,
     username: form.value.username,
@@ -122,26 +107,9 @@ async function insertUser() {
     password: form.value.password,
   });
   if (error) throw error;
-  if (data) navigateTo("/login");
+  else navigateTo('/logout')
 }
 
-// async function insertUser(dataUser) {
-//     const { error } = await supabase.from('Users').insert({
-//         id: userData.id,
-//         tipe_user: form.value.tipe_user,
-//         nama: from.value.nama,
-//         alamat: form.value.alamat,
-//         telepon: form.value.telepon,
-//         username: form.username.username,
-//         email: form.value.email,
-//         password: form.value.password
-//     })
-
-//     if(!error) throw error
-//     else {
-//         navigateTo('/user')
-//     }
-// }
 </script>
 
 <style scoped>

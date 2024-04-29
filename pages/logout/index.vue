@@ -8,22 +8,22 @@
 
 <script setup>
 const supabase = useSupabaseClient()
+const user = useSupabaseUser()
 
-async function logout() {
+async function logOut() {
     const { error } = await supabase.auth.signOut()
-    if(!error) navigateTo("/login")
+    if(!error) navigateTo('/login')
 }
 
 async function insertLog() {
-    const user = useSupabaseUser()
-    const { error } = await supabase
-    .from('LogActivity')
-    .insert([{
-        aktivitas: 'Logout',
-        username: user.value.user_metadata.username
-    }])
-
-    if(!error) logout()
+    const { data, error } = await supabase
+        .from('LogActivity')
+        .insert({
+            username: user.value.user_metadata.username,
+            aktivitas: 'Logout'
+    })
+    if(!error) logOut()
+    
 }
 
 onMounted(() => {

@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <h2 class="mt-5 fw-bold">Kelola User</h2>
-        <p>Menampilkan : 1 user</p>
+        <p>Menampilkan : {{ jmlUser }} user</p>
 
         <div class="row d-flex justify-content-center">
             <div class="col-md-7 input">
@@ -37,20 +37,18 @@
                                         <th>Username</th>
                                         <th>Email</th>
                                         <th>Password</th>
-                                        <th>Hapus</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="(user, index) in users">
-                                        <td>1</td>
-                                        <td>Admin</td>
-                                        <td>Frida</td>
-                                        <td>Tasikmalaya</td>
-                                        <td>081937343932</td>
-                                        <td>Admin01</td>
-                                        <td>admin01@apotekxyz.com</td>
-                                        <td>admin01</td>
-                                        <td><i class="bi bi-x-circle text-danger"></i></td>
+                                        <td value="#">{{ index + 1 }}</td>
+                                        <td>{{ user.tipe_user }}</td>
+                                        <td>{{ user.nama }}</td>
+                                        <td>{{ user.alamat }}</td>
+                                        <td>{{ user.telepon }}</td>
+                                        <td>{{ user.username }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.password }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -69,12 +67,24 @@ definePageMeta ({
 
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
+const jmlUser = ref(0)
 const keyword = ref ('')
 
 const { data: users, refresh } = useAsyncData('users', async () => {
-    const { data } = await supabase.from('Users').select()
+    const { data } = await supabase.from('Users').select().order("id", { ascending: true })
 
     return data
+})
+
+const getjmlUser = async () => {
+    const { data, count } = await supabase
+    .from('Users')
+    .select('*', { count: 'exact' })
+    if(data) jmlUser.value = count;
+}
+
+onMounted(() => {
+    getjmlUser()
 })
 
 </script>
@@ -94,6 +104,8 @@ h2, p {
 .btn {
     margin-right: 3rem;
     margin-top: 0.2rem;
+    width: 4rem;
+    background-color: white;
 }
 
 th {

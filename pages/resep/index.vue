@@ -36,7 +36,6 @@
                                         <th>Nama Dokter</th>
                                         <th>Resep Obat</th>
                                         <th>Jumlah</th>
-                                        <th>Hapus</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -48,7 +47,6 @@
                                         <td>{{ resep.nama_dokter }}</td>
                                         <td>{{ resep.Obat.nama_obat }}</td>
                                         <td>{{ resep.jumlah_obat }}</td>
-                                        <td><button><i class="bi bi-x-circle text-danger"></i></button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -104,6 +102,8 @@ h2, p {
 .btn {
     margin-right: 3rem;
     margin-top: 0.2rem;
+    width: 4rem;
+    background-color: white;
 }
 
 th {

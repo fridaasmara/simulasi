@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <h2 class="mt-5 fw-bold">Kelola Transaksi</h2>
-        <p>Menampilkan : 1 transaksi</p>
+        <p>Menampilkan : {{ jmlTransaksi }} transaksi</p>
 
         <div class="row d-flex justify-content-center">
             <div class="col-md-7 input">
@@ -40,7 +40,6 @@
                                         <th>Quantitas</th>
                                         <th>Harga</th>
                                         <th>Total Bayar</th>
-                                        <th>Hapus</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -56,7 +55,6 @@
                                         <td>{{ tran.quantitas }}</td>
                                         <td>{{ tran.harga }}</td>
                                         <td>{{ tran.total_bayar }}</td>
-                                        <td><i class="bi bi-x-circle text-danger"></i></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -75,6 +73,7 @@ definePageMeta({
 
 const supabase = useSupabaseClient()
 const trans = ref ([])
+const jmlTransaksi = ref(0)
 
 const getTransaksi = async () => { 
     const { data, error } = await supabase
@@ -84,9 +83,16 @@ const getTransaksi = async () => {
     if(data) trans.value = data
 }
 
+const getjmlTransaksi = async () => {
+    const { data, count } = await supabase
+    .from('Transaksi')
+    .select('*', { count: 'exact' })
+    if(data) jmlTransaksi.value = count;
+}
+
 onMounted(() => {
     getTransaksi()
-
+    getjmlTransaksi()
 })
 </script>
 
@@ -104,6 +110,8 @@ h2, p {
 .btn {
     margin-right: 3rem;
     margin-top: 0.2rem;
+    width: 4rem;
+    background-color: white;
 }
 
 th {

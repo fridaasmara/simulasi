@@ -38,13 +38,12 @@
 
 <script setup>
 definePageMeta({
-  middleware: 'auth'
+    middleware: 'auth'
 })
 
 const supabase = useSupabaseClient()
-
 const logs = ref([])
-const jmlLogAct = ref (0)
+const jmlLogAct = ref(0)
 
 async function getLog() {
     const { data, error } = await supabase
@@ -54,18 +53,18 @@ async function getLog() {
     if(data) logs.value = data
 }
 
-const getjmlLogAct = async () => {
+const getjmlLogAct = async() => {
     const { data, count } = await supabase
-    .from('LogActivity')
-    .select('*', { count: 'exact' })
-    if(data) jmlLogAct.value = count;
+        .from('LogActivity')
+        .select('*', { count: 'exact' })
+
+    if(data) jmlLogAct.value = count
 }
 
 onMounted(() => {
     getLog()
     getjmlLogAct()
 })
-
 </script>
 
 <style scoped>

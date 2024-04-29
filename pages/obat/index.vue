@@ -5,8 +5,8 @@
 
         <div class="row d-flex justify-content-center">
             <div class="col-md-7 input">
-                <from @submit.prevent="getObat" class="input-group flex-nowrap rounded">
-                    <input v-model="keyword" type="search" class="form-control" placeholder="Cari" aria-label="Search" aria-describedby="search-addon"/>
+                <from class="input-group flex-nowrap rounded">
+                    <input type="search" class="form-control" placeholder="Cari" aria-label="Search" aria-describedby="search-addon"/>
                     <span class="input-group-text bg-white"><i class="bi bi-search search"></i></span> 
                 </from>
             </div>
@@ -57,26 +57,29 @@
 </template>
 
 <script setup>
+definePageMeta({
+    middleware: 'auth'
+})
+
 const supabase = useSupabaseClient()
+const obats = ref ([])
 const jmlObat = ref (0)
-const obats = ref([])
-const keyword = ref ('')
 
-
-const getObat = async () => { 
-    const { data, error } = await supabase
+const getObat = async() => {
+    const { data, error } = await supabase 
         .from('Obat')
         .select('*')
         .order('id', { ascending: false })
-        // .ilike('nama_obat', `%${keyword.value}`)
+
     if(data) obats.value = data
 }
 
-const getjmlObat = async () => {
+const getjmlObat = async() => {
     const { data, count } = await supabase
-    .from('Obat')
-    .select('*', { count: 'exact' })
-    if(data) jmlObat.value = count;
+        .from('Obat')
+        .select('*', { count: 'exact' })
+
+    if(data) jmlObat.value = count
 }
 
 onMounted(() => {
@@ -99,6 +102,8 @@ h2, p {
 .btn {
     margin-right: 3rem;
     margin-top: 0.2rem;
+    width: 4rem;
+    background-color: white;
 }
 
 th {

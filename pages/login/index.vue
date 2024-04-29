@@ -8,7 +8,7 @@
                         <div class="text-center">
                             <img src="~/assets/img/logo-apotek.png" alt="logo">
                             <h1 class="fw-bold mt-3">Login</h1>
-                            <form @submit.prevent="signIn" class="mt-5 p-3">
+                            <form @submit.prevent="logIn" class="p-3">
                                 <div class="mb-3">
                                     <input v-model="email" type="email" class="form-control" placeholder="E-mail">
                                 </div>
@@ -27,30 +27,32 @@
 
 <script setup>
 const supabase = useSupabaseClient()
-const email = ref ('')
-const password = ref ('')
+const user = useSupabaseUser()
+const email = ref('')
+const password = ref('')
 
-async function signIn () {
+async function logIn() {
     const { data, error } = await supabase.auth.signInWithPassword({
         email: email.value,
-        password: password.value,
+        password: password.value
     })
     if (error) throw error
-    if (data) {
-        navigateTo ("/")
+    if(data) {
+        navigateTo ('/')
         const user = useSupabaseUser()
         insertLog(user)
-    }
+    } 
 }
 
 async function insertLog(user) {
-    const { error } = await supabase
-    .from('LogActivity')
-    .insert({
-        aktivitas: 'Login',
-        username: user.value.user_metadata.username
-    })
-    if (error) throw error
+    const { data, error } = await supabase
+        .from('LogActivity')
+        .insert({
+            username: user.value.user_metadata.username,
+            aktivitas: 'Login'
+    });
+    if(error) throw error
+    
 }
 </script>
 
@@ -68,6 +70,10 @@ img {
 
 input {
     font-size: 1.3rem;
+    margin-top: 2rem;
+    border-top: none;
+    border-left: none;
+    border-right: none;
 }
 
 .btn {

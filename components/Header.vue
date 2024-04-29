@@ -1,6 +1,6 @@
 <template>
     <div class="contaimer-fluid">
-        <div class="row nav p-4 justify-content-center">
+        <div class="row nav p-3 justify-content-center">
             <div class="col-lg-1">
                 <img src="~/assets/img/img-apotek-rb.png" alt="Logo" class="mt-3">
             </div>

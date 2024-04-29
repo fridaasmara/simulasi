@@ -44,7 +44,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Resep Obat</label>
-                                <select v-model="form.id_obat" class="form-select" aria-label="Default select example">
+                                <select v-model="form.id_obat" @change="ambilObat(form.id)" class="form-select" aria-label="Default select example">
                                     <option disable value=" "></option>
                                     <option v-for="obat in obats" :value="obat.id">{{ obat.nama_obat }}</option>
                                 </select>
@@ -59,22 +59,19 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="exampleFormControlInput1" class="form-label">Harga</label>
-                                        <select v-model="form.id_obat" class="form-select" aria-label="Default select example">
-                                            <option disable value=" "></option>
-                                            <option v-for="obat in obats" value="obat.id">{{ obat.harga }}</option>
-                                        </select>
+                                        <input v-model="tempHarga.harga" type="text" class="form-control" id="exampleFormControlInput1" readonly>
                                     </div>
                                 </div>
                             </div>
                             <div class="row mt-5">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label fw-semibold fs-4">Total Bayar</label>
+                                        <label for="exampleFormControlInput1" class="form-label fw-semibold fs-5">Total Bayar</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <input v-model="form.total_bayar" type="number" class="form-control">
+                                        <input v-model="form.total_bayar" type="number" class="form-control" id="exampleFormControlInput1" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -95,6 +92,9 @@ definePageMeta ({
 })
 
 const supabase = useSupabaseClient()
+const tempHarga = ref({})
+const harga = ref(0)
+const total = computed(() => form.value.quantitas * harga.value)
 const obats = ref ([])
 const reseps = ref ([])
 const form = ref ({
@@ -103,21 +103,30 @@ const form = ref ({
     id_resep: "",
     id_obat: "",
     quantitas: 0,
-    total_bayar: 0
+    total_bayar: total
 })
 
 const tambahTransaksi = async () => {
     const { error } = await supabase
-    .from('Transaksi').insert([form.value])
-        // console.log(form.value)
-
-    // if (error) throw error
+        .from('Transaksi')
+        .insert([
+            form.value
+        ])
+        console.log(form.value)
     if(!error) navigateTo ('/transaksi')
 }
 
 async function selectObat() {
     const { data, error } = await supabase.from("Obat").select()
     if(data) obats.value = data
+}
+
+async function ambilObat(id) {
+    const { data, error } = await supabase.from("Obat").select().eq("id", id).maybeSingle()
+    if(data) {
+        tempHarga.value = data
+        form.harga.value = tempHarga.harga
+    }
 }
 
 async function selectResep() {
